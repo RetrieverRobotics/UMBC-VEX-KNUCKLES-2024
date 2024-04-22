@@ -50,8 +50,8 @@ void umbc::Robot::opcontrol() {
     pros::Motor drive_left_front_motor = pros::Motor(LEFT_FRONT_MOTOR_PORT);
     pros::Motor drive_left_middle_back_motor = pros::Motor(LEFT_MIDDLE_BACK_MOTOR_PORT); //MOTOR_REVERSE if needed
     pros::Motor drive_left_middle_front_motor = pros::Motor(LEFT_MIDDLE_FRONT_MOTOR_PORT); //MOTOR_REVERSE if needed
-    
 	pros::Motor drive_left_back_motor = pros::Motor(LEFT_BACK_MOTOR_PORT);
+
     pros::MotorGroup drive_left = pros::MotorGroup(vector<pros::Motor>{drive_left_front_motor,
         drive_left_middle_front_motor, drive_left_middle_back_motor, drive_left_back_motor});
     drive_left.set_brake_modes(E_MOTOR_BRAKE_COAST);
@@ -62,6 +62,7 @@ void umbc::Robot::opcontrol() {
     pros::Motor drive_right_middle_front_motor = pros::Motor(RIGHT_MIDDLE_FRONT_MOTOR_PORT); //MOTOR_REVERSE if needed
     pros::Motor drive_right_middle_back_motor = pros::Motor(RIGHT_MIDDLE_BACK_MOTOR_PORT); //MOTOR_REVERSE if needed
 	pros::Motor drive_right_back_motor = pros::Motor(RIGHT_BACK_MOTOR_PORT);
+    
     pros::MotorGroup drive_right = pros::MotorGroup(vector<pros::Motor>{drive_right_front_motor,
         drive_right_middle_front_motor, drive_right_middle_back_motor, drive_right_back_motor});
     drive_right.set_brake_modes(E_MOTOR_BRAKE_COAST);
