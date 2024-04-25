@@ -37,6 +37,10 @@ using namespace std;
 #define LEFT_CLAMP 13
 #define RIGHT_CLAMP 14 // CHANGE PORTS AROUND IF NEEDED
 
+
+// Limit Switch
+#define LIMIT_SWITCH 1
+
 //#define 
 
 
@@ -68,11 +72,14 @@ void umbc::Robot::opcontrol() {
     drive_right.set_brake_modes(E_MOTOR_BRAKE_COAST);
     drive_right.set_gearing(E_MOTOR_GEAR_RED);
 
-    // initialize clamps
+    // initialize clamps (ik not good name to call them, change later)
     pros::Motor left_clamp = pros::Motor(LEFT_CLAMP);
     pros::Motor right_clamp = pros::Motor(RIGHT_CLAMP, MOTOR_REVERSE);
 
     pros::MotorGroup clamps = pros::MotorGroup(vector<pros::Motor>{right_clamp,left_clamp});
+
+    // initalize limit switch
+    pinMode(LIMIT_SWITCH, INPUT);
 
     while(1) {
 
@@ -97,6 +104,19 @@ void umbc::Robot::opcontrol() {
         } else {
             clamps.brake();
         }
+
+
+//have the motors for firiing mech rotatin unless switch is press
+        //UNLESS if fire button is fire button is
+
+    // Limit Switch Stuff
+    if ((digitalRead(LIMIT_SWITCH) == HIGH) && (get_digital(E_CONTROLLER_DIGITAL_R1) != true)){
+        clamps.move_velocity(0) 
+    } else if ((digitalRead(LIMIT_SWITCH) == HIGH) && (get_digital(E_CONTROLLER_DIGITAL_R1) == true)) { 
+        clamps.move_velocity(MOTOR_RED_GEAR_MULTIPLIER)
+    } else { 
+        clamps.move_velocity(MOTOR_RED_GEAR_MULTIPLIER)
+    }
 
         // required loop delay (do not edit)
         pros::Task::delay(this->opcontrol_delay_ms);

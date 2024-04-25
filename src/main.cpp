@@ -30,7 +30,6 @@ void initialize() {
 	INFO("initializing robot...");
 
 	pros::lcd::initialize();
-
 	INFO("robot initialized");
 }
 
