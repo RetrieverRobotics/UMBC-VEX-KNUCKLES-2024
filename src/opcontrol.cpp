@@ -39,7 +39,7 @@ using namespace std;
 
 
 // Limit Switch
-#define LIMIT_SWITCH 1
+#define LIMIT_SWITCH 1 //Port A
 
 //#define 
 
