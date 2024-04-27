@@ -38,8 +38,8 @@ using namespace std;
 #define RIGHT_AUTOCANNON 15
 
 
-// Limit Switch
-#define LIMIT_SWITCH 1 // Port A
+// Limit Switch (ADI Port H)
+#define AUTOCANNON_SWITCH 8
 
 void umbc::Robot::opcontrol() {
 
@@ -75,11 +75,17 @@ void umbc::Robot::opcontrol() {
 
     pros::MotorGroup autocannon = pros::MotorGroup(vector<pros::Motor>{left_autocannon, right_autocannon});
     autocannon.set_brake_modes(E_MOTOR_BRAKE_COAST);
-    autocannon.set_gearing(E_MOTOR_GEAR_BLUE);
+    autocannon.set_gearing(E_MOTOR_GEAR_GREEN);
+
+    // initialize autocannon sensor
+    pros::ADIDigitalIn autocannon_switch = pros::ADIDigitalIn(AUTOCANNON_SWITCH);
+
+    // initialize flag for if autocannon is enabled
+    bool is_autocannon_enabled = true;
 
     while(1) {
 
-        // set velocity for drive (arcade controls)
+        // calculate velocity for drive (arcade controls)
         int32_t arcade_y = controller_master->get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
         int32_t arcade_x = controller_master->get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
@@ -89,6 +95,31 @@ void umbc::Robot::opcontrol() {
         int32_t drive_right_velocity = (int32_t)(((double)(arcade_y - arcade_x) / (double)E_CONTROLLER_ANALOG_MAX)
                                         * MOTOR_GREEN_GEAR_MULTIPLIER);                                
 
+        // toggles for enabling/disabling autocannon
+        if (controller_master->get_digital(E_CONTROLLER_DIGITAL_R1)) {
+            is_autocannon_enabled = true;
+            drive_left_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
+            drive_right_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
+        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
+            is_autocannon_enabled = false;
+        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L2)) {
+            is_autocannon_enabled = false;
+        } else if (autocannon_switch.get_value()) {
+            is_autocannon_enabled = false;
+        }
+
+        // set velocity for autocannon
+        if (is_autocannon_enabled) {
+            autocannon.move_velocity(MOTOR_GREEN_GEAR_MULTIPLIER);
+        } else {
+            if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
+                autocannon.move_velocity(-MOTOR_GREEN_GEAR_MULTIPLIER);
+            } else {
+                autocannon.brake();
+            }
+        }
+
+        // set velocity for drive
         drive_left.move_velocity(drive_left_velocity);
         drive_right.move_velocity(drive_right_velocity);
 
