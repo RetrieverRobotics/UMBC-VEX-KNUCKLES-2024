@@ -30,6 +30,22 @@ void initialize() {
 	INFO("initializing robot...");
 
 	pros::lcd::initialize();
+	
+	if (false == pros::competition::is_connected()) {
+
+		pros::lcd::clear();
+		robot.menu();
+		pros::lcd::clear();
+
+		for (uint8_t i = 3; 0 < i; i--) {
+			pros::lcd::print(1, "Active In %d", i);
+			pros::Task::delay(MSG_DELAY_MS);
+			pros::lcd::clear();
+			
+		}
+		pros::lcd::clear();
+	}
+
 	INFO("robot initialized");
 }
 
