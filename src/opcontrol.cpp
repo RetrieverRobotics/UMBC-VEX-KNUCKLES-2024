@@ -75,7 +75,7 @@ void umbc::Robot::opcontrol() {
 
     pros::MotorGroup autocannon = pros::MotorGroup(vector<pros::Motor>{left_autocannon, right_autocannon});
     autocannon.set_brake_modes(E_MOTOR_BRAKE_COAST);
-    autocannon.set_gearing(E_MOTOR_GEAR_BLUE);
+    autocannon.set_gearing(E_MOTOR_GEAR_GREEN);
 
     // initialize autocannon sensor
     pros::ADIDigitalIn autocannon_switch = pros::ADIDigitalIn(AUTOCANNON_SWITCH);
@@ -100,7 +100,10 @@ void umbc::Robot::opcontrol() {
             is_autocannon_enabled = true;
             drive_left_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
             drive_right_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
-        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
+        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_R2)) {
+            is_autocannon_enabled = true;
+        }
+        else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
             is_autocannon_enabled = false;
         } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L2)) {
             is_autocannon_enabled = false;
@@ -110,10 +113,10 @@ void umbc::Robot::opcontrol() {
 
         // set velocity for autocannon
         if (is_autocannon_enabled) {
-            autocannon.move_velocity(MOTOR_BLUE_GEAR_MULTIPLIER);
+            autocannon.move_velocity(MOTOR_GREEN_GEAR_MULTIPLIER);
         } else {
             if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
-                autocannon.move_velocity(-MOTOR_BLUE_GEAR_MULTIPLIER);
+                autocannon.move_velocity(-MOTOR_GREEN_GEAR_MULTIPLIER);
             } else {
                 autocannon.brake();
             }
