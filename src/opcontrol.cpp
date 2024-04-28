@@ -102,8 +102,7 @@ void umbc::Robot::opcontrol() {
             drive_right_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
         } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_R2)) {
             is_autocannon_enabled = true;
-        }
-        else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
+        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
             is_autocannon_enabled = false;
         } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L2)) {
             is_autocannon_enabled = false;
