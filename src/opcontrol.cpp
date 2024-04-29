@@ -93,7 +93,11 @@ void umbc::Robot::opcontrol() {
                                         * MOTOR_GREEN_GEAR_MULTIPLIER);
 
         int32_t drive_right_velocity = (int32_t)(((double)(arcade_y - arcade_x) / (double)E_CONTROLLER_ANALOG_MAX)
-                                        * MOTOR_GREEN_GEAR_MULTIPLIER);                                
+                                        * MOTOR_GREEN_GEAR_MULTIPLIER);
+        
+        // set velocity for drive
+        drive_left.move_velocity(drive_left_velocity);
+        drive_right.move_velocity(drive_right_velocity);
 
         // toggles for enabling/disabling autocannon
         bool is_autocannon_primed = autocannon_switch.get_new_press();
@@ -120,9 +124,7 @@ void umbc::Robot::opcontrol() {
             }
         }
 
-        // set velocity for drive
-        drive_left.move_velocity(drive_left_velocity);
-        drive_right.move_velocity(drive_right_velocity);
+        
 
         // required loop delay (do not edit)
         pros::Task::delay(this->opcontrol_delay_ms);
