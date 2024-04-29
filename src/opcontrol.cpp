@@ -96,19 +96,18 @@ void umbc::Robot::opcontrol() {
                                         * MOTOR_GREEN_GEAR_MULTIPLIER);                                
 
         // toggles for enabling/disabling autocannon
+        bool is_autocannon_primed = autocannon_switch.get_new_press();
         if (controller_master->get_digital(E_CONTROLLER_DIGITAL_R1)) {
-            is_autocannon_enabled = true;
-            drive_left_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
-            drive_right_velocity = MOTOR_GREEN_GEAR_MULTIPLIER;
-        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_R2)) {
-            is_autocannon_enabled = true;
-        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L1)) {
+            is_autocannon_enabled = true;    
+        } else if (is_autocannon_primed) {
             is_autocannon_enabled = false;
-        } else if (controller_master->get_digital(E_CONTROLLER_DIGITAL_L2)) {
+        } else if (controller_master->get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
+            is_autocannon_enabled = !autocannon_switch.get_value();;
+        }  else if (controller_master->get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
             is_autocannon_enabled = false;
-        } else if (autocannon_switch.get_value()) {
+        } else if (controller_master->get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
             is_autocannon_enabled = false;
-        }
+        } 
 
         // set velocity for autocannon
         if (is_autocannon_enabled) {
