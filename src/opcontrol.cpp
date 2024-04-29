@@ -124,8 +124,6 @@ void umbc::Robot::opcontrol() {
             }
         }
 
-        
-
         // required loop delay (do not edit)
         pros::Task::delay(this->opcontrol_delay_ms);
     }
