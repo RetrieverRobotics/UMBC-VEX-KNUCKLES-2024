@@ -37,7 +37,6 @@ using namespace std;
 #define LEFT_AUTOCANNON  16
 #define RIGHT_AUTOCANNON 15
 
-
 // Limit Switch (ADI Port H)
 #define AUTOCANNON_SWITCH 8
 
